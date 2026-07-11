@@ -1,1 +1,1 @@
-# SAP-Challenge2-Demo
+# SAP-Challenge2-Demo-App
