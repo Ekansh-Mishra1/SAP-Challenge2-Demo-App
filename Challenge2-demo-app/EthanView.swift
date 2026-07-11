@@ -9,7 +9,19 @@ import SwiftUI
 
 struct EthanView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Group 14pm")
+        HStack {
+            Text("Elvia and")
+                .font(.largeTitle)
+                .bold()
+            Text("Ekansh")
+                .font(.largeTitle)
+                .bold()
+        }
+        Image("Ethan")
+            .clipShape(Circle())
+        Text("Mentorman: Ethan")
+        Text("He sick")
     }
 }
 
