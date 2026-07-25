@@ -8,19 +8,6 @@
 import SwiftUI
 import FoundationModels
 
-
-@Generable
-struct Answer {
-    @Guide(description: "Answer to the question")
-    var title: String
-    
-    @Guide(description: "Fun Facts based on the question")
-    var ingredients: String
-    
-    @Guide(description: "Recommended Follow up questions")
-    var description: String
-}
-
 struct MainContentView: View {
     @State var responseContent: Answer?
     
@@ -33,10 +20,10 @@ struct MainContentView: View {
 
             if let content = responseContent {
                 Text(content.title)
-                    .font(.headline)
-                Text(content.ingredients)
-                    .font(.subheadline)
-                Text(content.description)
+                    .font(.body)
+                Text(content.facts)
+                    .font(.body)
+                Text(content.followUp)
                     .font(.body)
             } else {
                 Text("No response yet")
