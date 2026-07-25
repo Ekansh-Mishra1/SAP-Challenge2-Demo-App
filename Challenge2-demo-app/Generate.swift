@@ -13,7 +13,7 @@ struct Answer {
     @Guide(description: "Answer to the question")
     var title: String
     
-    @Guide(description: "Fun Facts based on the question")
+    @Guide(description: "Explanation for why that is the answer")
     var facts: String
     
     @Guide(description: "Recommended Follow up questions")
