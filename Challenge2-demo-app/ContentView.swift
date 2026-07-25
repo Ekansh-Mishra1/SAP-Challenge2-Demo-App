@@ -10,21 +10,26 @@ import FoundationModels
 
 struct MainContentView: View {
     @State var responseContent: Answer?
+    @State var prompt: String
+    @State private var isLoading = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
+            TextField("Enter username", text: $prompt)
+                .textFieldStyle(.roundedBorder)
+                .padding()
+                .keyboardType(.default)
             Button("Generate Answer") {
-                answerQN(prompt: "Tell me something about SwiftUI")
+                answerQN(prompt: prompt)
             }
             .buttonStyle(.borderedProminent)
 
-            if let content = responseContent {
+            if isLoading {
+                ProgressView("Generating...")
+            } else if let content = responseContent {
                 Text(content.title)
-                    .font(.body)
                 Text(content.facts)
-                    .font(.body)
                 Text(content.followUp)
-                    .font(.body)
             } else {
                 Text("No response yet")
                     .foregroundStyle(.secondary)
@@ -35,6 +40,7 @@ struct MainContentView: View {
     }
     func answerQN(prompt: String) {
         responseContent = nil
+        isLoading = true
         Task {
             let instructions = """
                         You are a personalization assistant.
@@ -70,5 +76,5 @@ struct MainContentView: View {
 }
 
 #Preview {
-    MainContentView()
+    MainContentView(prompt: "Tell me about SwiftUI")
 }
