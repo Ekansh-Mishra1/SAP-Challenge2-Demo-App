@@ -10,7 +10,7 @@ import FoundationModels
 
 struct MainContentView: View {
     @State var responseContent: Answer?
-    @State var prompt: String
+    @State var prompt: String = ""
     @State private var isLoading = false
     
     var body: some View {
