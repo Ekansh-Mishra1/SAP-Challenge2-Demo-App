@@ -66,9 +66,11 @@ struct MainContentView: View {
                 let response = try await model.respond(to: prompt, generating: Answer.self)
                 // Assign the generated content to our state
                 self.responseContent = response.content
+                self.isLoading = false
             } catch {
                 // On error, clear content
                 self.responseContent = nil
+                self.isLoading = false
                 print("Model respond error: \(error)")
             }
         }
