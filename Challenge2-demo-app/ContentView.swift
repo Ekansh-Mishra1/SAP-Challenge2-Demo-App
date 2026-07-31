@@ -8,62 +8,114 @@
 import SwiftUI
 import FoundationModels
 
-struct UserPreferences {
-    var tone: String
-    var length: String
-    var readingLevel: Int
-    var useEmoji: Bool
-}
-
 struct MainContentView: View {
     @State var responseContent: Answer?
     @State var prompt: String = ""
     @State private var isLoading = false
-    @State var personalisation1 = UserPreferences(tone: "Friendly", length: "Medium", readingLevel: 10, useEmoji: true)
-    @State var personalisation2 = UserPreferences(tone: "Rude", length: "Long", readingLevel: 3, useEmoji: true)
-    @State var personalisation3 = UserPreferences(tone: "Emotional", length: "Short", readingLevel: 7, useEmoji: false)
+    @State private var tonePersonality = ""
+    @State private var lengthPersonality = ""
+    @State private var levelOfEmotionsPersonality = ""
+    @State private var wordComplicationPersonality = ""
+    @State private var emojiUsePersonality = ""
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            TextField("Enter username", text: $prompt)
-                .textFieldStyle(.roundedBorder)
+        TabView {
+            Tab("AI", systemImage: "waveform.circle.fill") {
+                VStack(alignment: .leading, spacing: 12) {
+                    TextField("Enter username", text: $prompt)
+                        .textFieldStyle(.roundedBorder)
+                        .padding()
+                        .keyboardType(.default)
+                    Button("Generate Answer") {
+                        answerQN(prompt: prompt)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    
+                    if isLoading {
+                        ProgressView("Generating...")
+                    } else if let content = responseContent {
+                        Text(content.title)
+                        Text(content.facts)
+                        Text(content.followUp)
+                    } else {
+                        Text("No response yet")
+                            .foregroundStyle(.secondary)
+                    }
+                }
                 .padding()
-                .keyboardType(.default)
-            Button("Generate Answer") {
-                answerQN(prompt: prompt)
             }
-            .buttonStyle(.borderedProminent)
-
-            if isLoading {
-                ProgressView("Generating...")
-            } else if let content = responseContent {
-                Text(content.title)
-                Text(content.facts)
-                Text(content.followUp)
-            } else {
-                Text("No response yet")
-                    .foregroundStyle(.secondary)
+            Tab("Settings", systemImage: "gearshape.2") {
+                VStack{
+                    Text("Settings")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                    Text("Personalize response:")
+                        .multilineTextAlignment(.center)
+                    //for selecting tone
+                    Text("Tone:")
+                        .fontWeight(.bold)
+                    Button ("rude"){
+                        tonePersonality = "Generate answer in a rude tone"
+                    }
+                    Button ("friendly"){
+                        tonePersonality = "Generate answer in a friendly tone"
+                    }
+                    //for selecting length
+                    Text("Length:")
+                        .fontWeight(.bold)
+                    Button ("long"){
+                        lengthPersonality = "Generate long answer"
+                    }
+                    Button ("short"){
+                        lengthPersonality = "Generate short answer"
+                    }
+                    //for selecting emotional level
+                    Text("How emotional it should be:")
+                        .fontWeight(.bold)
+                    Button ("Emotional"){
+                        levelOfEmotionsPersonality = "Generate answer with a lot of emotion"
+                    }
+                    Button ("Detached"){
+                        levelOfEmotionsPersonality = "Generate answer with as little emotion as possible"
+                    }
+                    //for selecting word complication
+                    Text("Complication of word choice:")
+                    Button("Complicated") {
+                        wordComplicationPersonality = "Generate answer with very complicated and philosophical words"
+                    }
+                    Button("Simple") {
+                        wordComplicationPersonality = "Generate answer with very simple and easy-to-understand words"
+                    }
+                    //for selecting how much you use emoji
+                    Text("Emoji usage:")
+                    Button("A LOT") {
+                        emojiUsePersonality = "Generate answer with as many emojis as possible"
+                    }
+                    Button("Moderate") {
+                        emojiUsePersonality = "Generate answer with some emojis but do not use too many. Only keep it to 2-3 for short answers and 4-5m for long answers"
+                    }
+                }
             }
         }
-        .padding()
         
     }
     func answerQN(prompt: String) {
         responseContent = nil
         isLoading = true
-        let pers = personalisation3
         Task {
             let preferences = """
             User Preferences:
-            - Tone: \(pers.tone)
-            - Response length: \(pers.length)
-            - Reading level: \(pers.readingLevel)
-            - Use emojis: \(pers.useEmoji ? "Yes" : "No")
+            - Tone: \(tonePersonality)           
+            - Response length: \(lengthPersonality)
+            - Emotion level: \(levelOfEmotionsPersonality)
+            - Readabiltiy: \(wordComplicationPersonality)
+            - Use emojis: \(emojiUsePersonality)
             """
             
             let instructions = """
             You are a personalization assistant. 
             Your role is to generate responses tailored to the individual user using the profile and context provided at runtime.
-
+            
             You will receive:
             1. A user's request.
             2. The following are a list of user preferences which you are to follow at all costs.
@@ -80,7 +132,7 @@ struct MainContentView: View {
             - Respect user privacy and only use the information explicitly supplied in the current context.
             
             Always adapt your response to the personalization profile whenever it is relevant.
-
+            
             Do not invent user information.
             Do not mention the profile unless the user asks.
             
