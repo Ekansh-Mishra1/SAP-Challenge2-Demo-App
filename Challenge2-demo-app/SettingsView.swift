@@ -15,7 +15,7 @@ struct SettingsView: View {
     @Binding var wordComplicationPersonality: String
     @Binding var emojiUsePersonality: String
     
-    @State private var toneValue: Double = 0.5
+    @State private var toneValue: Double = 1
     @State private var lengthValue: Double = 1
     @State private var emotionValue: Double = 2
     @State private var wordValue: Double = 2
