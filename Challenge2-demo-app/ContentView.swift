@@ -8,20 +8,23 @@
 import SwiftUI
 import FoundationModels
 
-struct MainContentView: View {
+struct ContentView: View {
     @State var responseContent: Answer?
-    @State var prompt: String = ""
     @State private var isLoading = false
-    @State private var tonePersonality = ""
-    @State private var lengthPersonality = ""
-    @State private var levelOfEmotionsPersonality = ""
-    @State private var wordComplicationPersonality = ""
-    @State private var emojiUsePersonality = ""
+    
+    @State private var prompt = ""
+    
+    @Binding var tone: String
+    @Binding var length: String
+    @Binding var emotion: String
+    @Binding var word: String
+    @Binding var emoji: String
+    
     var body: some View {
         TabView {
-            Tab("AI", systemImage: "waveform.circle.fill") {
+            Tab("AI", systemImage: "apple.intelligence") {
                 VStack(alignment: .leading, spacing: 12) {
-                    TextField("Enter username", text: $prompt)
+                    TextField("Enter a Question", text: $prompt)
                         .textFieldStyle(.roundedBorder)
                         .padding()
                         .keyboardType(.default)
@@ -44,60 +47,10 @@ struct MainContentView: View {
                 .padding()
             }
             Tab("Settings", systemImage: "gearshape.2") {
-                VStack{
-                    Text("Settings")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                    Text("Personalize response:")
-                        .multilineTextAlignment(.center)
-                    //for selecting tone
-                    Text("Tone:")
-                        .fontWeight(.bold)
-                    Button ("rude"){
-                        tonePersonality = "Generate answer in a rude tone"
-                    }
-                    Button ("friendly"){
-                        tonePersonality = "Generate answer in a friendly tone"
-                    }
-                    //for selecting length
-                    Text("Length:")
-                        .fontWeight(.bold)
-                    Button ("long"){
-                        lengthPersonality = "Generate long answer"
-                    }
-                    Button ("short"){
-                        lengthPersonality = "Generate short answer"
-                    }
-                    //for selecting emotional level
-                    Text("How emotional it should be:")
-                        .fontWeight(.bold)
-                    Button ("Emotional"){
-                        levelOfEmotionsPersonality = "Generate answer with a lot of emotion"
-                    }
-                    Button ("Detached"){
-                        levelOfEmotionsPersonality = "Generate answer with as little emotion as possible"
-                    }
-                    //for selecting word complication
-                    Text("Complication of word choice:")
-                    Button("Complicated") {
-                        wordComplicationPersonality = "Generate answer with very complicated and philosophical words"
-                    }
-                    Button("Simple") {
-                        wordComplicationPersonality = "Generate answer with very simple and easy-to-understand words"
-                    }
-                    //for selecting how much you use emoji
-                    Text("Emoji usage:")
-                    Button("A LOT") {
-                        emojiUsePersonality = "Generate answer with as many emojis as possible"
-                    }
-                    Button("Moderate") {
-                        emojiUsePersonality = "Generate answer with some emojis but do not use too many. Only keep it to 2-3 for short answers and 4-5m for long answers"
-                    }
-                }
+                SettingsView(tonePersonality: $tone, lengthPersonality: $length, levelOfEmotionsPersonality: $emotion, wordComplicationPersonality: $word, emojiUsePersonality: $emoji)
             }
+            
         }
-        
     }
     func answerQN(prompt: String) {
         responseContent = nil
@@ -105,11 +58,11 @@ struct MainContentView: View {
         Task {
             let preferences = """
             User Preferences:
-            - Tone: \(tonePersonality)           
-            - Response length: \(lengthPersonality)
-            - Emotion level: \(levelOfEmotionsPersonality)
-            - Readabiltiy: \(wordComplicationPersonality)
-            - Use emojis: \(emojiUsePersonality)
+            - Tone: \(tone)           
+            - Response length: \(length)
+            - Emotion level: \(emotion)
+            - Readabiltiy: \(word)
+            - Use emojis: \(emoji)
             """
             
             let instructions = """
@@ -157,5 +110,11 @@ struct MainContentView: View {
 }
 
 #Preview {
-    MainContentView(prompt: "Tell me about SwiftUI")
+    ContentView(
+        tone: .constant("Generate answer in a friendly tone"),
+        length: .constant("Generate a medium-length answer"),
+        emotion: .constant("Generate answer with a moderate amount of emotion"),
+        word: .constant("Generate answer with simple words"),
+        emoji: .constant("Generate answer with some emojis but do not use too many")
+    )
 }
