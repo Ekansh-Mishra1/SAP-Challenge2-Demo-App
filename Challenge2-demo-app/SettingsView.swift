@@ -29,6 +29,7 @@ struct SettingsView: View {
             List {
                 
                 // Tone
+                //skip 32-56
                 Section {
                     VStack(spacing: 6) {
                         HStack {
@@ -164,8 +165,8 @@ struct SettingsView: View {
                         "Generate answer with simple words"
                     }
                 }
-                
-                // Emoji
+                //skip 168-221
+                // Emoji (remove in code-along)
                 Section {
                     VStack(spacing: 6) {
                         HStack {
@@ -204,6 +205,7 @@ struct SettingsView: View {
         }
     }
     
+    //remove sliderDots function from all of the above lines
     func sliderDots(count: Int) -> some View {
         HStack {
             ForEach(0..<count, id: \.self) { index in

@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var isLoading = false
     
     @State private var prompt = ""
-    
+    //remove tone, emoji
     @Binding var tone: String
     @Binding var length: String
     @Binding var emotion: String
@@ -46,6 +46,7 @@ struct ContentView: View {
                 }
                 .padding()
             }
+            //remove tone, emoji
             Tab("Settings", systemImage: "gearshape.2") {
                 SettingsView(tonePersonality: $tone, lengthPersonality: $length, levelOfEmotionsPersonality: $emotion, wordComplicationPersonality: $word, emojiUsePersonality: $emoji)
             }
@@ -56,6 +57,7 @@ struct ContentView: View {
         responseContent = nil
         isLoading = true
         Task {
+            //remove tone, emoji
             let preferences = """
             User Preferences:
             - Tone: \(tone)           
@@ -108,7 +110,7 @@ struct ContentView: View {
         }
     }
 }
-
+//remove tone, emoji
 #Preview {
     ContentView(
         tone: .constant("Generate answer in a friendly tone"),
