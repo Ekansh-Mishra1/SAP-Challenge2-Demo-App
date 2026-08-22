@@ -11,6 +11,7 @@ import SwiftUI
 
 @main
 struct Challenge2_demo_appApp: App {
+    //remove tone, emoji
     @State private var tone = "Generate answer in a friendly tone"
     @State private var length = "Generate a medium-length answer"
     @State private var emotion = "Generate answer with a moderate amount of emotion"
@@ -19,6 +20,7 @@ struct Challenge2_demo_appApp: App {
 
     var body: some Scene {
         WindowGroup {
+            //remove tone, emoji
             ContentView(
                 tone: $tone,
                 length: $length,
