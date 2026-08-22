@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 @main
 struct Challenge2_demo_appApp: App {
     //remove tone, emoji
